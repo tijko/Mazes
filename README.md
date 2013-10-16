@@ -3,7 +3,7 @@ PyMaze
 
 Randomized maze generator with pygames
 
-There two sizes you can run, first `cd /path/of/pymaze` then:
+There are two sizes you can run, first `cd /path/of/pymaze` then:
 
     python sm_maze.py
 
