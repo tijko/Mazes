@@ -1,7 +1,7 @@
 PyMaze
 ======
 
-Maze generator with pygames
+Randomized maze generator with pygames
 
 #### Usage:
 
