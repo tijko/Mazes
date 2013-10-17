@@ -10,31 +10,96 @@ import time
 os.environ['SDL_VIDEO_WINDOW_POS'] = '600, 30'
 
 
-mv_chk = lambda x, y: x + y
-lt_chk = lambda x, y: x - y
+class Maze(object):
 
-def h_mov(coordinates):
-    horizontal = {1:[-20, 0], 2:[20, 0]}
-    moves = [v for v in [map(mv_chk, coordinates, horizontal[i]) 
-             for i in horizontal] if all(j>0 and j<700 for j in v)]
-    return moves
+    def __init__(self):
+        self.mv_chk = lambda x, y: x + y
+        self.lt_chk = lambda x, y: x - y
 
-def v_mov(coordinates):
-    vertical = {1:[0, -20], 2:[0, 20]}
-    moves = [v for v in [map(mv_chk, coordinates, vertical[i])
-             for i in vertical] if all(j>0 and j<700 for j in v)]
-    return moves
+        self.explored = [[20, 700]] 
+        self.unexplored = [None]
 
-def vec_chk(cur, pre):
-    diff = tuple(map(lt_chk, cur, pre))
-    nodes = {(0, 20,):[[-20, 0], [20, 0], [20, 20], [-20, 20], [0, 20]],
-             (0, -20,):[[-20, 0], [20, 0], [-20, -20], [20, -20], [0, -20]],
-             (20, 0,):[[20, 0], [20, -20], [20, 20], [0, -20], [0, 20]],
-             (-20, 0,):[[-20, 0], [-20, -20], [-20, 20], [0, -20], [0, 20]]
-            }
-    moves = [v for v in [map(mv_chk, cur, i) for i in nodes[diff]]]
-    return moves
+        self.prev = [20, 700]
+        self.pos = [20, 680]
 
+        self.prev_type = 'vert' 
+        self.curr_type = 'vert'
+
+        self.curr = self.pos
+
+        self.horz = [i for i in self.h_mov if i not in self.explored]
+        self.vert = [i for i in self.v_mov if i not in self.explored]
+        self.edges = self.horz + self.vert
+
+    @property
+    def h_mov(self):
+        horizontal = {1:[-20, 0], 2:[20, 0]}
+        moves = [v for v in [map(self.mv_chk, self.pos, horizontal[i]) 
+                 for i in horizontal] if all(j>0 and j<700 for j in v)]
+        return moves
+
+    @property
+    def v_mov(self):
+        vertical = {1:[0, -20], 2:[0, 20]}
+        moves = [v for v in [map(self.mv_chk, self.pos, vertical[i])
+                 for i in vertical] if all(j>0 and j<700 for j in v)]
+        return moves
+
+    @property
+    def vec_chk(self):
+        diff = tuple(map(self.lt_chk, self.pos, self.prev))
+        nodes = {(0, 20,):[[-20, 0], [20, 0], [20, 20], [-20, 20], [0, 20]],
+                 (0, -20,):[[-20, 0], [20, 0], [-20, -20], [20, -20], [0, -20]],
+                 (20, 0,):[[20, 0], [20, -20], [20, 20], [0, -20], [0, 20]],
+                 (-20, 0,):[[-20, 0], [-20, -20], [-20, 20], [0, -20], [0, 20]]
+                }
+        moves = [v for v in [map(self.mv_chk, self.pos, i) for i in nodes[diff]]]
+        return moves
+
+    def next_wall(self, walls):
+        move_pos = None
+        while True:
+            if walls:
+                if isinstance(walls[0], dict):
+                    move_pos = walls.pop(0)    
+                    self.prev, self.pos = move_pos.items()[0]
+                else:
+                    self.pos = random.choice(walls)
+                    walls.remove(self.pos)
+                if not [i for i in self.vec_chk if i in self.explored]:
+                    self.curr = self.pos
+                    self.prev_type = self.curr_type 
+                    if self.prev[0] == self.curr[0]:
+                        self.curr_type = 'vert'
+                    else:
+                        self.curr_type = 'horz'   
+                    if not move_pos: 
+                        for i in self.edges:
+                            self.unexplored.append({tuple(self.prev):i})
+                    return        
+            else:
+                self.pos = self.prev
+                return
+
+    def gen_maze(self):
+        while self.unexplored:
+            if self.unexplored[0] == None:
+                self.unexplored.pop(0)
+            if (all(i > 0 and i < 700 for i in self.pos) and self.pos not in self.explored):
+                self.explored.append(self.pos) 
+                self.horz = [i for i in self.h_mov if i not in self.explored]
+                self.vert = [i for i in self.v_mov if i not in self.explored]
+                self.edges = self.horz + self.vert
+                self.prev = self.pos
+                if self.prev_type != self.curr_type and self.curr_type == 'horz':
+                    self.next_wall(self.horz)
+                elif self.prev_type != self.curr_type and self.curr_type == 'vert':
+                    self.next_wall(self.vert)
+                else:
+                    self.next_wall(self.edges)
+            else:
+                self.next_wall(self.unexplored)
+        return self.explored
 
 def main():
     pygame.init()
@@ -45,102 +110,15 @@ def main():
     indicator = pygame.image.load(home + '/images/sm_position.png')
     indicator.convert_alpha()
     location = [20, 720]
-    screen.blit(wall, (20, 700))
-    filled = [[20,700]] 
-    prev_type = 'vert' 
-    curr_type = 'vert'
-    prev = [20, 700]
-    pos = [20, 680]
-    curr = pos
-    unexplored = [None]
-    horz = [i for i in h_mov(pos) if i not in filled]
-    vert = [i for i in v_mov(pos) if i not in filled]
-    edges = horz + vert
-    while unexplored:
-        if unexplored[0] == None:
-            unexplored.pop(0)
-        if (all(i > 0 and i < 700 for i in pos) and pos not in filled):
-            screen.blit(wall, pos)
-            pygame.display.flip()
-            filled.append(pos) 
-            horz = [i for i in h_mov(pos) if i not in filled]
-            vert = [i for i in v_mov(pos) if i not in filled]
-            edges = horz + vert
-            prev = pos
-            if prev_type != curr_type and curr_type == 'horz':
-                while True:
-                    if horz:
-                        pos = random.choice(horz)
-                        horz.remove(pos)
-                        if not [i for i in vec_chk(pos, prev) if i in filled]:
-                            curr = pos
-                            prev_type = curr_type 
-                            if prev[0] == curr[0]:
-                                curr_type = 'vert'
-                            else:
-                                curr_type = 'horz'    
-                            for i in edges:
-                                unexplored.append({tuple(prev):i})
-                            break                    
-                    else:
-                        pos = prev
-                        break
-            elif prev_type != curr_type and curr_type == 'vert':
-                while True:
-                    if vert:
-                        pos = random.choice(vert)
-                        vert.remove(pos)
-                        if not [i for i in vec_chk(pos, prev) if i in filled]:
-                            curr = pos                    
-                            prev_type = curr_type 
-                            if prev[0] == curr[0]:
-                                curr_type = 'vert'
-                            else:
-                                curr_type = 'horz'
-                            for i in edges:
-                                unexplored.append({tuple(prev):i})
-                            break
-                    else:
-                        pos = prev
-                        break
-            else:
-                while True:
-                    if edges:
-                        pos = random.choice(edges)
-                        edges.remove(pos)
-                        if not [i for i in vec_chk(pos, prev) if i in filled]:
-                            curr = pos
-                            prev_type = curr_type 
-                            if prev[0] == curr[0]:
-                                curr_type = 'vert'
-                            else:
-                                curr_type = 'horz'
-                            for i in edges:
-                                unexplored.append({tuple(prev):i})
-                            break
-                    else:
-                        pos = prev
-                        break
 
-        else:
-            while True:
-                if unexplored:
-                    move_pos = unexplored.pop(0)
-                    prev, pos = move_pos.items()[0]
-                    if not [i for i in vec_chk(pos, prev) if i in filled]:
-                        curr = pos
-                        prev_type = curr_type
-                        if prev[0] == curr[0]:
-                            curr_type = 'vert'
-                        else:
-                            curr_type = 'horz'
-                        break
-                else:
-                    break
+    screen.blit(wall, (20, 700))
     screen.blit(wall, [700, 20])
-    filled.extend([[700, 20], [720, 20]])
-    screen.blit(indicator, location) 
-    pygame.display.flip()
+    screen.blit(indicator, location)
+
+    maze = Maze()
+    maze_structure = maze.gen_maze()
+    maze_structure.extend([[700, 20], [720, 20]])
+
     while True:
         for event in pygame.event.get():
             if (event.type == pygame.KEYDOWN and 
@@ -148,24 +126,25 @@ def main():
                 sys.exit()
             if (event.type == pygame.KEYDOWN and
                 event.key == pygame.K_UP):
-                if [location[0], location[1] - 20] in filled:
+                if [location[0], location[1] - 20] in maze_structure:
                     location[1] -= 20
             if (event.type == pygame.KEYDOWN and
                 event.key == pygame.K_DOWN):
-                if [location[0], location[1] + 20] in filled:
+                if [location[0], location[1] + 20] in maze_structure:
                     location[1] += 20
             if (event.type == pygame.KEYDOWN and
                 event.key == pygame.K_RIGHT):
-                if [location[0] + 20, location[1]] in filled:
+                if [location[0] + 20, location[1]] in maze_structure:
                     location[0] += 20
             if (event.type == pygame.KEYDOWN and
                 event.key == pygame.K_LEFT):
-                if [location[0] - 20, location[1]] in filled:
+                if [location[0] - 20, location[1]] in maze_structure:
                     location[0] -= 20
-        for path in filled:
+        for path in maze_structure:
             screen.blit(wall, path)
         screen.blit(indicator, location)
         pygame.display.flip()
+
 
 if __name__ == '__main__':
     main()
