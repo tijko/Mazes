@@ -15,17 +15,15 @@ class Maze(object):
     def __init__(self):
         self.mv_chk = lambda x, y: x + y
         self.lt_chk = lambda x, y: x - y
-
-        self.explored = [[20, 700]] 
-        self.unexplored = [None]
-
+        
         self.prev = [20, 700]
         self.pos = [20, 680]
 
+        self.explored = [self.prev]
+        self.unexplored = [None]
+
         self.prev_type = 'vert' 
         self.curr_type = 'vert'
-
-        self.curr = self.pos
 
         self.horz = [i for i in self.h_mov if i not in self.explored]
         self.vert = [i for i in self.v_mov if i not in self.explored]
@@ -67,9 +65,8 @@ class Maze(object):
                     self.pos = random.choice(walls)
                     walls.remove(self.pos)
                 if not [i for i in self.vec_chk if i in self.explored]:
-                    self.curr = self.pos
                     self.prev_type = self.curr_type 
-                    if self.prev[0] == self.curr[0]:
+                    if self.prev[0] == self.pos[0]:
                         self.curr_type = 'vert'
                     else:
                         self.curr_type = 'horz'   
@@ -83,7 +80,7 @@ class Maze(object):
 
     def gen_maze(self):
         while self.unexplored:
-            if self.unexplored[0] == None:
+            if not self.unexplored[0]:
                 self.unexplored.pop(0)
             if (all(i > 0 and i < 700 for i in self.pos) and self.pos not in self.explored):
                 self.explored.append(self.pos) 
