@@ -116,6 +116,12 @@ def main():
     maze_structure = maze.gen_maze()
     maze_structure.extend([[680, 40], [720, 40]])
 
+    if not([640, 40] in maze_structure) and not([680, 80] in maze_structure):
+        if ([600, 40] in maze_structure):
+            maze_structure.append([680, 80])
+        else:
+            maze_structure.append([640, 40])
+        print 'n'
     while True:
         for event in pygame.event.get():
             if (event.type == pygame.KEYDOWN and 
