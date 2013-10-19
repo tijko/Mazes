@@ -106,16 +106,15 @@ def main():
     wall.convert_alpha()
     indicator = pygame.image.load(home + '/images/lg_position.png')
     indicator.convert_alpha()
-    location = [40, 680]
 
-    screen.blit(wall, (40, 680))
-    screen.blit(wall, [680, 40])
-    screen.blit(indicator, location)
+    exit = pygame.image.load(home + '/images/sm_exit.png')
+    exit.convert_alpha()
+
+    location = [40, 680]
 
     maze = Maze()
     maze_structure = maze.gen_maze()
     maze_structure.extend([[680, 40], [720, 40]])
-
     if not([640, 40] in maze_structure) and not([680, 80] in maze_structure):
         if ([600, 40] in maze_structure):
             maze_structure.append([680, 80])
@@ -145,6 +144,7 @@ def main():
         for path in maze_structure:
             screen.blit(wall, path)
         screen.blit(indicator, location)
+        screen.blit(exit, [680, 40])
         pygame.display.flip()
 
 
