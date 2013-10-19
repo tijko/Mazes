@@ -106,7 +106,7 @@ def main():
     wall.convert_alpha()
     indicator = pygame.image.load(home + '/images/sm_position.png')
     indicator.convert_alpha()
-    location = [20, 720]
+    location = [20, 700]
 
     screen.blit(wall, (20, 700))
     screen.blit(wall, [700, 20])
