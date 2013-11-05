@@ -3,15 +3,15 @@ PyMaze
 
 Randomized maze generator with pygames
 
-There are two sizes you can run, first `cd /path/of/pymaze` then:
+There are two mazes you can run, first `cd /path/of/pymaze` then:
 
-    python sm_maze.py
+    python shape_maze.py
 
-to run the smaller maze or:
+to run the shape maze or:
 
-    python lg_maze.py
+    python DFS_maze.py
 
-for the larger maze.
+for the depth first search algorithm generated maze.
 
 #### Usage:
 
