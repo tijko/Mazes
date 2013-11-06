@@ -98,7 +98,7 @@ def main():
     screen.blit(wall, (700, 20))
     maze = Maze(screen, wall)
     maze_structure = maze.gen_maze()
-    maze_structure.extend([(700, 20), (720, 20), (20, 700)])
+    maze_structure.extend([[700, 20], [720, 20], [20, 700]])
     if not([700, 40] in maze_structure) and not([680, 20] in maze_structure):
         if ([660, 20] in maze_structure):
             maze_structure.append([700, 40])
@@ -111,19 +111,19 @@ def main():
                 sys.exit()
             if (event.type == pygame.KEYDOWN and
                 event.key == pygame.K_UP):
-                if (location[0], location[1] - 20) in maze_structure:
+                if [location[0], location[1] - 20] in maze_structure:
                     location[1] -= 20
             if (event.type == pygame.KEYDOWN and
                 event.key == pygame.K_DOWN):
-                if (location[0], location[1] + 20) in maze_structure:
+                if [location[0], location[1] + 20] in maze_structure:
                     location[1] += 20
             if (event.type == pygame.KEYDOWN and
                 event.key == pygame.K_RIGHT):
-                if (location[0] + 20, location[1]) in maze_structure:
+                if [location[0] + 20, location[1]] in maze_structure:
                     location[0] += 20
             if (event.type == pygame.KEYDOWN and
                 event.key == pygame.K_LEFT):
-                if (location[0] - 20, location[1]) in maze_structure:
+                if [location[0] - 20, location[1]] in maze_structure:
                     location[0] -= 20
         for path in maze_structure:
             screen.blit(wall, path)
