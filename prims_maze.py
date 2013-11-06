@@ -72,7 +72,7 @@ class Maze(object):
             del self.frontier[lowest_weight]
             if (all(i > 0 and i < 700 for i in self.pos) and 
                 self.pos not in self.maze):
-                if not [i for i in self.vec_chk if i in self.maze]:
+                if not any(i for i in self.vec_chk if i in self.maze):
                     self.scr.blit(self.wall, self.pos)
                     pygame.display.flip() 
                     time.sleep(0.05)
