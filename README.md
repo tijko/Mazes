@@ -17,6 +17,8 @@ for the depth first search algorithm generated maze or:
 
 to run the prims algorithm generated maze.
 
+#### Description:
+
 The depth first search will randomly chose a path direction while their are
 still "unexplored" grid coordinates left.  If the path direction is blocked
 by intersections or the grid edge, the path direction will back track to the
