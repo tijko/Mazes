@@ -20,15 +20,16 @@ to run the prims algorithm generated maze.
 #### Description:
 
 The depth first search or **DFS** maze will randomly chose a path direction 
-while their are still "unexplored" grid coordinates left.  If the path 
+while there are still "unexplored" grid coordinates left.  If the path 
 direction is blocked by intersections or the grid edge, the path direction 
 will back track to the last unblocked and unexplored coordinate.  This will 
 repeat until all coordinates are "explored".
 
-The **prims** algorithm generated maze starts by randomly selecting a coordinate 
-from a randomly weighted grid coordinates to expand from.  Once that position
-is established, all that walls edges are added to the frontier array.  Since
-every coordinate has been assigned a random weight, the next position is 
+The **prims** maze starts by creating a matrix of coordinates and assigning a
+random weight to each node. Then a random coordinate from the matrix is selected 
+to give the maze a starting point to expand from.  Once that position is 
+established, all edges adjacent to that position are added to the frontier array. 
+Since every coordinate has been assigned a random weight, the next position is 
 determined by the minimum weight in the frontier array.  These steps are 
 repeated until there are no more frontier edges. 
 
