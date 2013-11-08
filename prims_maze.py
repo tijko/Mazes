@@ -8,6 +8,7 @@ import os
 import time
 
 from collections import defaultdict
+from solutions.A_star import AstarPathFinder as astar
 
 os.environ['SDL_VIDEO_WINDOW_POS'] = '600, 30'
 
@@ -93,6 +94,8 @@ def main():
     wall.convert_alpha()
     indicator = pygame.image.load(home + '/images/sm_position.png')
     indicator.convert_alpha()
+    solution_path = pygame.image.load(home + '/images/solution.png')
+    solution_path.convert_alpha()
     location = [20, 700]
     screen.blit(wall, (20, 700))
     screen.blit(wall, (700, 20))
@@ -104,6 +107,9 @@ def main():
             maze_structure.append([700, 40])
         else:
             maze_structure.append([680, 20])
+    path_finder = astar(maze_structure)   
+    solution = path_finder.pathfinder() 
+    solve = False
     while True:
         for event in pygame.event.get():
             if (event.type == pygame.KEYDOWN and 
@@ -125,8 +131,14 @@ def main():
                 event.key == pygame.K_LEFT):
                 if [location[0] - 20, location[1]] in maze_structure:
                     location[0] -= 20
+            if (event.type == pygame.KEYDOWN and
+                event.key == pygame.K_s):
+                solve = True
         for path in maze_structure:
             screen.blit(wall, path)
+        if solve:
+            for path in solution:
+                screen.blit(solution_path, path)
         screen.blit(indicator, location)
         pygame.display.flip()
 
