@@ -1,4 +1,4 @@
-PMaze
+PyMaze
 ======
 
 Randomized maze generator with pygames
