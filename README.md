@@ -33,9 +33,12 @@ Since every coordinate has been assigned a random weight, the next position is
 determined by the minimum weight in the frontier array.  These steps are 
 repeated until there are no more frontier edges. 
 
+The solution path finder uses an **A star** search algorithm to find the optimal 
+path to solve the maze.
+
 #### Usage:
 
 You start at the bottom left corner and use the arrow keys to move, 
 finishing at the top right.
 
-Use `s` key to show the maze solution path.
+Use the `s` key to show the maze solution path.
