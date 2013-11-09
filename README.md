@@ -38,4 +38,4 @@ repeated until there are no more frontier edges.
 You start at the bottom left corner and use the arrow keys to move, 
 finishing at the top right.
 
-Use `s` key to show the solution.
+Use `s` key to show the maze solution path.
