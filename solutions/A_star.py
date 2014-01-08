@@ -19,8 +19,8 @@ class AstarPathFinder(object):
         self.closed = set()
 
     def h_score_cal(self, position):
-        cur_x, cur_y = position[0], position[1]
-        end_x, end_y = self.end[0], self.end[1]
+        cur_x, cur_y = position
+        end_x, end_y = self.end
         return (abs(cur_x - end_x) + abs(cur_y - end_y)) * 10
 
     @property
