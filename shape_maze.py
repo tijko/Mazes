@@ -278,8 +278,7 @@ class Maze(object):
         edge_set = set()
         user_statuses = (self.BLOCK_EXIT, self.BLOCK_ENTRANCE, self.BLOCK_PATH,
                          self.MASK_USABLE)
-        rows = [r for r, c in spaces]  # todo: there must be a better way
-        cols = [c for r, c in spaces]
+        rows, cols = zip(*spaces)
         row_minmax = min(rows), max(rows)
         col_minmax = min(cols), max(cols)
         for space, status in spaces.items():
