@@ -180,8 +180,7 @@ class Maze(object):
     def __str__(self):
         """Return a rectangular string representation of this maze."""
         # find the bounding rectangle
-        rows = [r for r, c in self._spaces]  # todo: there must be a better way
-        cols = [c for r, c in self._spaces]
+        rows, cols = zip(*self._spaces)
         row_min, row_max = min(rows), max(rows)
         col_min, col_max = min(cols), max(cols)
         # build the string
