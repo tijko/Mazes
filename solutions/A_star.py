@@ -29,8 +29,7 @@ class AstarPathFinder(object):
         for position in self._opend:
             if self.f_score[position] != low:
                 continue
-            else:
-                return position
+            return position
     
     @property
     def neighbors(self):
