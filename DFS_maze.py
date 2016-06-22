@@ -38,14 +38,14 @@ class Maze(object):
     @property
     def h_mov(self):
         horizontal = {1:[-20, 0], 2:[20, 0]}
-        moves = [v for v in [map(self.mv_chk, self.pos, horizontal[i]) 
+        moves = [v for v in [list(map(self.mv_chk, self.pos, horizontal[i])) 
                  for i in horizontal] if all(j>0 and j<700 for j in v)]
         return moves
 
     @property
     def v_mov(self):
         vertical = {1:[0, -20], 2:[0, 20]}
-        moves = [v for v in [map(self.mv_chk, self.pos, vertical[i])
+        moves = [v for v in [list(map(self.mv_chk, self.pos, vertical[i]))
                  for i in vertical] if all(j>0 and j<700 for j in v)]
         return moves
 
@@ -57,7 +57,8 @@ class Maze(object):
                  (20, 0,):[[20, 0], [20, -20], [20, 20], [0, -20], [0, 20]],
                  (-20, 0,):[[-20, 0], [-20, -20], [-20, 20], [0, -20], [0, 20]]
                 }
-        moves = [v for v in [map(self.mv_chk, self.pos, i) for i in nodes[diff]]]
+        moves = [v for v in [list(map(self.mv_chk, self.pos, i)) 
+                   for i in nodes[diff]]]
         return moves
 
     def next_wall(self, walls):
@@ -66,7 +67,7 @@ class Maze(object):
             if walls:
                 if isinstance(walls[0], dict):
                     move_pos = walls.pop(-1)    
-                    self.prev, self.pos = move_pos.items()[0]
+                    self.prev, self.pos = list(move_pos.items())[0]
                 else:
                     self.pos = random.choice(walls)
                     walls.remove(self.pos)
@@ -88,7 +89,8 @@ class Maze(object):
         while self.unexplored:
             if not self.unexplored[0]:
                 self.unexplored.pop(0)
-            if (all(i > 0 and i < 700 for i in self.pos) and self.pos not in self.explored):
+            if (all(i > 0 and i < 700 for i in self.pos) and 
+                self.pos not in self.explored):
                 self.explored.append(self.pos)
 
                 self.scr.blit(self.wall, self.pos)
