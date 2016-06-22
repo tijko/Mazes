@@ -144,23 +144,23 @@ def main():
             if (event.type == pygame.KEYDOWN and 
                 event.key == pygame.K_ESCAPE):
                 sys.exit()
-            if (event.type == pygame.KEYDOWN and
+            elif (event.type == pygame.KEYDOWN and
                 event.key == pygame.K_UP):
                 if [location[0], location[1] - 20] in maze_structure:
                     location[1] -= 20
-            if (event.type == pygame.KEYDOWN and
+            elif (event.type == pygame.KEYDOWN and
                 event.key == pygame.K_DOWN):
                 if [location[0], location[1] + 20] in maze_structure:
                     location[1] += 20
-            if (event.type == pygame.KEYDOWN and
+            elif (event.type == pygame.KEYDOWN and
                 event.key == pygame.K_RIGHT):
                 if [location[0] + 20, location[1]] in maze_structure:
                     location[0] += 20
-            if (event.type == pygame.KEYDOWN and
+            elif (event.type == pygame.KEYDOWN and
                 event.key == pygame.K_LEFT):
                 if [location[0] - 20, location[1]] in maze_structure:
                     location[0] -= 20
-            if (event.type == pygame.KEYDOWN and
+            elif (event.type == pygame.KEYDOWN and
                 event.key == pygame.K_s):
                 solve = True
         for path in maze_structure:
@@ -168,6 +168,9 @@ def main():
         if solve:
             for path in solution:
                 screen.blit(solution_path, path)
+        if location == [720, 20]:
+            # display
+            break
         screen.blit(indicator, location)
         pygame.display.flip()
 
