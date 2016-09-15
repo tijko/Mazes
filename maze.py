@@ -5,6 +5,8 @@ import os
 import sys
 import pygame
 
+from solutions.A_star import AstarPathFinder as astar
+
 
 class Maze(object):
 
@@ -24,6 +26,8 @@ class Maze(object):
         self.solve = False
 
     def run_maze_loop(self, maze):
+        path_finder = astar(maze)
+        solution = path_finder.pathfinder()
         while True:
             for event in pygame.event.get():
                 if (event.type == pygame.KEYDOWN and 
@@ -52,6 +56,6 @@ class Maze(object):
                 self.screen.blit(self.wall, path)
             if self.solve:
                 for path in solution:
-                    self.screen.blit(solution_path, path)
+                    self.screen.blit(self.solution_path, path)
             self.screen.blit(self.indicator, self.location)
             pygame.display.flip()
