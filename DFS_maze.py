@@ -5,7 +5,6 @@ import time
 import random
 
 from maze import *
-from solutions.A_star import AstarPathFinder as astar
 
 os.environ['SDL_VIDEO_WINDOW_POS'] = '600, 30'
 
@@ -17,8 +16,7 @@ class DFS(Maze):
         self.mv_chk = lambda x, y: x + y
         self.lt_chk = lambda x, y: x - y
         
-        self.prev = [20, 700]
-        self.pos = [20, 680]
+        self.prev, self.pos = [20, 700], [20, 680]
 
         self.explored = [self.prev]
         self.unexplored = [None]
