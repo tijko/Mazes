@@ -1,24 +1,19 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import pygame
-import random
-import sys
-import os
 import time
+import random
 
+from maze import *
 from solutions.A_star import AstarPathFinder as astar
 
 os.environ['SDL_VIDEO_WINDOW_POS'] = '600, 30'
 
 
-class Maze(object):
+class DFS(Maze):
 
-    def __init__(self, scr, wall):
-
-        self.scr = scr
-        self.wall = wall
-
+    def __init__(self):
+        super(DFS, self).__init__()
         self.mv_chk = lambda x, y: x + y
         self.lt_chk = lambda x, y: x - y
         
@@ -34,6 +29,18 @@ class Maze(object):
         self.horz = [i for i in self.h_mov if i not in self.explored]
         self.vert = [i for i in self.v_mov if i not in self.explored]
         self.edges = self.horz + self.vert
+
+        self.maze_structure = self.gen_maze()
+        if (not([700, 40] in self.maze_structure) and 
+            not([680, 20] in self.maze_structure)):
+            if ([660, 20] in self.maze_structure):
+                self.maze_structure.append([700, 40])
+            else:
+                self.maze_structure.append([680, 20])
+        self.maze_structure.extend([[700, 20], [720, 20]])
+
+        path_finder = astar(self.maze_structure)
+        self.solution = path_finder.pathfinder()
 
     @property
     def h_mov(self):
@@ -93,7 +100,7 @@ class Maze(object):
                 self.pos not in self.explored):
                 self.explored.append(self.pos)
 
-                self.scr.blit(self.wall, self.pos)
+                self.screen.blit(self.wall, self.pos)
                 pygame.display.flip() 
                 time.sleep(0.05)
 
@@ -111,66 +118,7 @@ class Maze(object):
                 self.next_wall(self.unexplored)
         return self.explored
 
-def main():
-    pygame.init()
-    screen = pygame.display.set_mode((720, 720))
-    home = os.getcwd()
-    wall = pygame.image.load(home + '/images/sm_wall.png')
-    wall.convert_alpha()
-    solution_path = pygame.image.load(home + '/images/solution.png')
-    solution_path.convert_alpha()
-    indicator = pygame.image.load(home + '/images/sm_position.png')
-    indicator.convert_alpha()
-    location = [20, 700]
-
-    screen.blit(wall, (20, 700))
-    screen.blit(wall, [700, 20])
-    screen.blit(indicator, location)
-
-    maze = Maze(screen, wall)
-    maze_structure = maze.gen_maze()
-    maze_structure.extend([[700, 20], [720, 20]])
-
-    if not([700, 40] in maze_structure) and not([680, 20] in maze_structure):
-        if ([660, 20] in maze_structure):
-            maze_structure.append([700, 40])
-        else:
-            maze_structure.append([680, 20])
-    path_finder = astar(maze_structure)
-    solution = path_finder.pathfinder()
-    solve = False
-    while True:
-        for event in pygame.event.get():
-            if (event.type == pygame.KEYDOWN and 
-                event.key == pygame.K_ESCAPE):
-                sys.exit()
-            if (event.type == pygame.KEYDOWN and
-                event.key == pygame.K_UP):
-                if [location[0], location[1] - 20] in maze_structure:
-                    location[1] -= 20
-            if (event.type == pygame.KEYDOWN and
-                event.key == pygame.K_DOWN):
-                if [location[0], location[1] + 20] in maze_structure:
-                    location[1] += 20
-            if (event.type == pygame.KEYDOWN and
-                event.key == pygame.K_RIGHT):
-                if [location[0] + 20, location[1]] in maze_structure:
-                    location[0] += 20
-            if (event.type == pygame.KEYDOWN and
-                event.key == pygame.K_LEFT):
-                if [location[0] - 20, location[1]] in maze_structure:
-                    location[0] -= 20
-            if (event.type == pygame.KEYDOWN and
-                event.key == pygame.K_s):
-                solve = True
-        for path in maze_structure:
-            screen.blit(wall, path)
-        if solve:
-            for path in solution:
-                screen.blit(solution_path, path)
-        screen.blit(indicator, location)
-        pygame.display.flip()
-
 
 if __name__ == '__main__':
-    main()
+    dfs_maze = DFS()
+    dfs_maze.run_maze_loop(dfs_maze.maze_structure)
