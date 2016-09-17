@@ -13,8 +13,6 @@ class DFS(Maze):
 
     def __init__(self):
         super(DFS, self).__init__()
-        self.mv_chk = lambda x, y: x + y
-        self.lt_chk = lambda x, y: x - y
         
         self.prev, self.pos = [20, 700], [20, 680]
 
@@ -29,13 +27,13 @@ class DFS(Maze):
         self.edges = self.horz + self.vert
 
         self.maze_structure = self.gen_maze()
-        if (not([700, 40] in self.maze_structure) and 
-            not([680, 20] in self.maze_structure)):
-            if ([660, 20] in self.maze_structure):
-                self.maze_structure.append([700, 40])
+        if (not((700, 40) in self.maze_structure) and 
+            not((680, 20) in self.maze_structure)):
+            if ((660, 20) in self.maze_structure):
+                self.maze_structure.append((700, 40))
             else:
-                self.maze_structure.append([680, 20])
-        self.maze_structure.extend([[700, 20], [720, 20]])
+                self.maze_structure.append((680, 20,))
+        self.maze_structure.extend([(700, 20,), (720, 20,)])
 
         path_finder = astar(self.maze_structure)
         self.solution = path_finder.pathfinder()
@@ -62,7 +60,7 @@ class DFS(Maze):
                  (20, 0,):[[20, 0], [20, -20], [20, 20], [0, -20], [0, 20]],
                  (-20, 0,):[[-20, 0], [-20, -20], [-20, 20], [0, -20], [0, 20]]
                 }
-        moves = [v for v in [list(map(self.mv_chk, self.pos, i)) 
+        moves = [v for v in [tuple(map(self.mv_chk, self.pos, i)) 
                    for i in nodes[diff]]]
         return moves
 
@@ -72,7 +70,7 @@ class DFS(Maze):
             if walls:
                 if isinstance(walls[0], dict):
                     move_pos = walls.pop(-1)    
-                    self.prev, self.pos = list(move_pos.items())[0]
+                    self.prev, self.pos = tuple(move_pos.items())[0]
                 else:
                     self.pos = random.choice(walls)
                     walls.remove(self.pos)
