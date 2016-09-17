@@ -35,8 +35,8 @@ class AstarPathFinder(object):
     def neighbors(self):
         borders = [(20, 0), (-20, 0), (0, 20), (0, -20)]
         cost_cal = lambda x, y: x - y
-        adjacent_walls = [list(map(cost_cal, self.current, i)) for i in borders]
-        return [tuple(n) for n in adjacent_walls if n in self.paths] 
+        adjacent_walls = [tuple(map(cost_cal, self.current, i)) for i in borders]
+        return [tuple(n) for n in adjacent_walls if n in self.paths]
         
     def pathfinder(self):
         self.f_score[self.start] = (self.g_score[self.start] + 

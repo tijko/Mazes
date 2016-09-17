@@ -19,6 +19,8 @@ class Maze(object):
         self.solution_path = pygame.image.load(home + '/images/solution.png')
         self.solution_path.convert_alpha()
         self.indicator = pygame.image.load(home + '/images/sm_position.png')
+        self.mv_chk = lambda x, y: x + y
+        self.lt_chk = lambda x, y: x - y
         self.indicator.convert_alpha()
         self.location = [20, 700]
         self.screen.blit(self.wall, (20, 700))
@@ -35,19 +37,19 @@ class Maze(object):
                     sys.exit()
                 elif (event.type == pygame.KEYDOWN and
                     event.key == pygame.K_UP):
-                    if [self.location[0], self.location[1] - 20] in maze:
+                    if (self.location[0], self.location[1] - 20) in maze:
                         self.location[1] -= 20
                 elif (event.type == pygame.KEYDOWN and
                     event.key == pygame.K_DOWN):
-                    if [self.location[0], self.location[1] + 20] in maze:
+                    if (self.location[0], self.location[1] + 20) in maze:
                         self.location[1] += 20
                 elif (event.type == pygame.KEYDOWN and
                     event.key == pygame.K_RIGHT):
-                    if [self.location[0] + 20, self.location[1]] in maze:
+                    if (self.location[0] + 20, self.location[1]) in maze:
                         self.location[0] += 20
                 elif (event.type == pygame.KEYDOWN and
                     event.key == pygame.K_LEFT):
-                    if [self.location[0] - 20, self.location[1]] in maze:
+                    if (self.location[0] - 20, self.location[1]) in maze:
                         self.location[0] -= 20
                 elif (event.type == pygame.KEYDOWN and
                     event.key == pygame.K_s):
