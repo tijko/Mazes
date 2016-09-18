@@ -14,7 +14,7 @@ class DFS(Maze):
     def __init__(self):
         super(DFS, self).__init__()
         
-        self.prev, self.pos = [20, 700], [20, 680]
+        self.prev, self.pos = (20, 700,), [20, 680]
 
         self.explored = [self.prev]
         self.unexplored = [None]
@@ -27,38 +27,38 @@ class DFS(Maze):
         self.edges = self.horz + self.vert
 
         self.maze_structure = self.gen_maze()
-        if (not((700, 40) in self.maze_structure) and 
-            not((680, 20) in self.maze_structure)):
-            if ((660, 20) in self.maze_structure):
-                self.maze_structure.append((700, 40))
+        if (not((700, 40,) in self.maze_structure) and 
+            not((680, 20,) in self.maze_structure)):
+            if ((660, 20,) in self.maze_structure):
+                self.maze_structure.append((700, 40,))
             else:
                 self.maze_structure.append((680, 20,))
-        self.maze_structure.extend([(700, 20,), (720, 20,)])
+        self.maze_structure.extend([(700, 20,), (720, 20,), (20, 680,)])
 
         path_finder = astar(self.maze_structure)
         self.solution = path_finder.pathfinder()
 
     @property
     def h_mov(self):
-        horizontal = {1:[-20, 0], 2:[20, 0]}
-        moves = [v for v in [list(map(self.mv_chk, self.pos, horizontal[i])) 
+        horizontal = {1:(-20, 0,), 2:(20, 0,)}
+        moves = [v for v in [tuple(map(self.mv_chk, self.pos, horizontal[i])) 
                  for i in horizontal] if all(j>0 and j<700 for j in v)]
         return moves
 
     @property
     def v_mov(self):
-        vertical = {1:[0, -20], 2:[0, 20]}
-        moves = [v for v in [list(map(self.mv_chk, self.pos, vertical[i]))
+        vertical = {1:(0, -20), 2:(0, 20)}
+        moves = [v for v in [tuple(map(self.mv_chk, self.pos, vertical[i]))
                  for i in vertical] if all(j>0 and j<700 for j in v)]
         return moves
 
     @property
     def vec_chk(self):
         diff = tuple(map(self.lt_chk, self.pos, self.prev))
-        nodes = {(0, 20,):[[-20, 0], [20, 0], [20, 20], [-20, 20], [0, 20]],
-                 (0, -20,):[[-20, 0], [20, 0], [-20, -20], [20, -20], [0, -20]],
-                 (20, 0,):[[20, 0], [20, -20], [20, 20], [0, -20], [0, 20]],
-                 (-20, 0,):[[-20, 0], [-20, -20], [-20, 20], [0, -20], [0, 20]]
+        nodes = {(0, 20,):[(-20, 0,), (20, 0,), (20, 20,), (-20, 20,), (0, 20,)],
+                 (0, -20,):[(-20, 0,), (20, 0,), (-20, -20,), (20, -20,), (0, -20,)],
+                 (20, 0,):[(20, 0,), (20, -20,), (20, 20,), (0, -20,), (0, 20,)],
+                 (-20, 0,):[(-20, 0,), (-20, -20,), (-20, 20,), (0, -20,), (0, 20,)]
                 }
         moves = [v for v in [tuple(map(self.mv_chk, self.pos, i)) 
                    for i in nodes[diff]]]
