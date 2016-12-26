@@ -1,6 +1,14 @@
-PyMaze
+Mazes
 ======
 
+C++
+======
+
+The `C++` maze is wip at this point.  Making the adjustment to using `ncurses`
+for the maze generator and using `C++` itself.
+
+Python
+======
 Randomized maze generator with pygames
 
 There are three mazes you can run, first `cd /path/of/pymaze` then:
