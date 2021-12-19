@@ -111,11 +111,11 @@ void Maze::draw(void)
         if (it->first[1] < max_y - 3 && !(it->first[0] % 3)) {
             std::vector<int> horizontal = {it->first[0] - 1, it->first[1] + 1};
             if (maze.find(horizontal) == maze.end())
-                mvwprintw(stdscr, it->first[1] + 1, it->first[0], "|");
+                mvwprintw(stdscr, it->first[1] + 1, it->first[0], "%s", "|");
         } else if (!((it->first[0] - 1) % 3)) {
             std::vector<int> vertical = {it->first[0], it->first[1] + 1};
             if (maze.find(vertical) == maze.end())
-                mvwprintw(stdscr, it->first[1], it->first[0]);
+                mvwprintw(stdscr, it->first[1], it->first[0], "%s", " ");
         }
     }
 
@@ -154,20 +154,20 @@ int main(int argc, char *argv[])
 
     init_screen();
     /* 
-    mvwprintw(stdscr, 24, 9, "|");
-    mvwprintw(stdscr, 24, 12, "|");
-    mvwprintw(stdscr, 25, 10, "--");
-    mvwprintw(stdscr, 23, 10, "--");
+    mvwprintw(stdscr, 24, 9, "%s", "|");
+    mvwprintw(stdscr, 24, 12, "%s", |");
+    mvwprintw(stdscr, 25, 10, "%s", "--");
+    mvwprintw(stdscr, 23, 10, "%s", "--");
 
-    mvwprintw(stdscr, 22, 9, "|");
-    mvwprintw(stdscr, 22, 12, "|");
-    mvwprintw(stdscr, 21, 10, "--"); 
+    mvwprintw(stdscr, 22, 9, "%s", "|");
+    mvwprintw(stdscr, 22, 12, "%s", "|");
+    mvwprintw(stdscr, 21, 10, "%s", "--"); 
 
-    mvwprintw(stdscr, 22, 11, "x");
+    mvwprintw(stdscr, 22, 11, "%s", "x");
 
-    mvwprintw(stdscr, 21, 13, "--");
-    mvwprintw(stdscr, 23, 13, "--");
-    mvwprintw(stdscr, 22, 15, "|");
+    mvwprintw(stdscr, 21, 13, "%s", "--");
+    mvwprintw(stdscr, 23, 13, "%s", "--");
+    mvwprintw(stdscr, 22, 15, "%s", "|");
     */
 
     /*
