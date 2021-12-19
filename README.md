@@ -25,7 +25,7 @@ for the depth first search algorithm generated maze or:
 
 to run the prims algorithm generated maze.
 
-!(maze-sample)[Python/images/maze-example.jpg]
+![Prims maze-sample](Python/images/maze-example.jpg)
 
 #### Description:
 
