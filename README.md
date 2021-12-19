@@ -25,6 +25,8 @@ for the depth first search algorithm generated maze or:
 
 to run the prims algorithm generated maze.
 
+!(maze-sample)[images/maze-example.jpg]
+
 #### Description:
 
 The depth first search or **DFS** maze will randomly chose a path direction 
