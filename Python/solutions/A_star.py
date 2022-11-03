@@ -3,7 +3,7 @@
 
 from collections import defaultdict
 
-
+# XXX Research more Heuristics
 class AstarPathFinder(object):
 
     def __init__(self, paths):
