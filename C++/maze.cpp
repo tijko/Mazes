@@ -90,9 +90,7 @@ void Maze::build(void)
         std::vector<std::vector<int>> neighbors = find_neighbors(current[0], 
                                                                  current[1]);
         int neighbor_count = 0;
-        int neighbor_size = (int) neighbors.size();
-        for (int i=0; i < neighbor_size; i++) {
-            std::vector<int> neighbor = neighbors[i];
+        for (std::vector<int> neighbor : neighbors) {
             if (maze.find(neighbor) != maze.end())
                 neighbor_count++;
         }
