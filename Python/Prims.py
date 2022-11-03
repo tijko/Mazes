@@ -87,6 +87,7 @@ class Prims(Maze):
                     self.maze.append(self.pos)
         return self.maze
 
+
 if __name__ == '__main__':
     prims = Prims()
     prims.run_maze_loop(prims.maze_structure)
