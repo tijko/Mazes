@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
 import pygame
 import random
 from collections import deque, namedtuple
@@ -7,6 +8,7 @@ import os
 
 
 # refer to Maze MASK constants for valid mask characters
+# XXX credit goes to check the commit
 sample_mask =\
     """
 
