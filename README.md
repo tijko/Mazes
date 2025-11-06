@@ -1,5 +1,25 @@
 Mazes
 ======
+Install & USAGE
+======
+There are mulitple dependencies:
+
+  For C++ it uses NCurses library - make sure this is installed prior to
+  running make.
+
+  To build, simply navigate to the `C++` directory and run:
+
+    `$ make`
+
+  And invoke to run:
+
+    `$ .\maze`
+
+  With Python running correctly depends on `git clone` into your `HOME`
+  directory.
+
+  Then call `python $path-to-Prim.py` (or any other path-finding algorithm
+  maze).
 
 C++
 ======
@@ -46,7 +66,7 @@ repeated until there are no more frontier edges.
 The solution path finder uses an **A star** search algorithm to find the optimal 
 path to solve the maze.
 
-#### Usage:
+#### Maze Navigation:
 
 You start at the bottom left corner and use the arrow keys to move, 
 finishing at the top right.
