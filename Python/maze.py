@@ -5,6 +5,7 @@ import os
 import sys
 import pygame
 
+from pathlib import PosixPath
 from solutions.A_star import AstarPathFinder as astar
 
 
@@ -13,12 +14,19 @@ class Maze(object):
     def __init__(self):
         pygame.init()
         self.screen = pygame.display.set_mode((720, 720))
-        home = os.getcwd()
-        self.wall = pygame.image.load(home + '/images/sm_wall.png')
+        '''
+        We know that the path relative to the "images" directory
+        must go through "Mazes/Python/images/".  Where this resides
+        is not of consequence.  Just add this as the "absolute".
+        Hence the `os.getcwd()' is misguided.....
+        '''
+        home = PosixPath.home()
+        images = home.joinpath('Mazes/Python/images')
+        self.wall = pygame.image.load(images.joinpath('sm_wall.png'))
         self.wall.convert_alpha()
-        self.solution_path = pygame.image.load(home + '/images/solution.png')
+        self.solution_path = pygame.image.load(images.joinpath('solution.png'))
         self.solution_path.convert_alpha()
-        self.indicator = pygame.image.load(home + '/images/sm_position.png')
+        self.indicator = pygame.image.load(images.joinpath('sm_position.png'))
         self.mv_chk = lambda x, y: x + y
         self.lt_chk = lambda x, y: x - y
         self.indicator.convert_alpha()
